@@ -14,6 +14,9 @@
         const tg = window.Telegram.WebApp;
         tg.expand();
 
+        const params = new URLSearchParams(document.location.search);
+        const giveaway_id = params.get('giveaway_id'); // 'key' – это имя целевого параметра
+
         // Настройка основной кнопки
         tg.MainButton.setParams({
             text: "Разрешить отправку сообщений",
@@ -34,6 +37,7 @@
             tg.sendData(JSON.stringify(userData)); // Отправка данных в бота
             tg.MainButton.hide(); // Скрыть кнопку после нажатия
             alert("Данные отправлены в бот, разрешение получено.");
+            alert(giveaway_id);
         });
 
         document.getElementById("sendData").addEventListener("click", () => {
