@@ -1,74 +1,40 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Telegram Mini App</title>
+    <title>Mini App</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: var(--tg-theme-text-color);
-            background-color: var(--tg-theme-bg-color);
-        }
-        .button {
-            background-color: var(--tg-theme-button-color);
-            color: var(--tg-theme-button-text-color);
-            border: none;
-            padding: 10px 20px;
-            margin: 10px 0;
-            cursor: pointer;
-        }
-    </style>
 </head>
 <body>
-    <h1>Interactive Telegram Mini App</h1>
-    <button class="button" id="showAlert">Show Alert</button>
-    <button class="button" id="showConfirm">Show Confirm</button>
-    <button class="button" id="showPopup">Show Popup</button>
+    <h1>Добро пожаловать в мини-приложение</h1>
+    <button id="sendData">Отправить данные</button>
+
     <script>
-        let tg = window.Telegram.WebApp;
+        const tg = window.Telegram.WebApp;
         tg.expand();
 
-        document.getElementById('showAlert').addEventListener('click', function() {
-            tg.showAlert("This is an alert!");
+        // Настройка основной кнопки
+        tg.MainButton.setParams({
+            text: "Разрешить отправку сообщений",
+            is_visible: true,
+            is_active: true,
         });
 
-        document.getElementById('showConfirm').addEventListener('click', function() {
-            tg.showConfirm("Are you sure?", function(confirmed) {
-                if (confirmed) {
-                    tg.showAlert("You confirmed!");
-                } else {
-                    tg.showAlert("You cancelled!");
-                }
-            });
-        });
 
-        document.getElementById('showPopup').addEventListener('click', function() {
-            tg.showPopup({
-                title: "Popup Title",
-                message: "This is a popup message",
-                buttons: [
-                    {id: "ok", type: "ok", text: "OK"},
-                    {id: "cancel", type: "cancel", text: "Cancel"}
-                ]
-            }, function(buttonId) {
-                tg.showAlert("You clicked: " + buttonId);
-            });
-        });
+        const user = tg.initDataUnsafe.user;
+        const userData = {
+            id: user.id,
+            first_name: user.first_name,
+            last_name: user.last_name || "Не указана",
+            username: user.username || "Не указан"
+        };
 
-        tg.MainButton.setText("Main Action").show().onClick(function(){
-            tg.showAlert("Main button clicked!");
-        });
+        // Отправка данных в бота
+        tg.sendData(JSON.stringify(userData)); // Отправка данных в бота
 
-        tg.BackButton.show().onClick(function(){
-            tg.showAlert("Back button clicked!");
-        });
-
-        tg.onEvent('mainButtonClicked', function(){
-            tg.HapticFeedback.impactOccurred('light');
+        document.getElementById("sendData").addEventListener("click", () => {
+            tg.MainButton.show(); // Показать основную кнопку
         });
     </script>
 </body>
