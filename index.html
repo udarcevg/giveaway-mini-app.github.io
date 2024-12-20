@@ -36,8 +36,8 @@
 
             tg.sendData(JSON.stringify(userData)); // Отправка данных в бота
             tg.MainButton.hide(); // Скрыть кнопку после нажатия
-            alert("Данные отправлены в бот, разрешение получено.");
-            alert(giveaway_id);
+            tg.showAlert("Данные отправлены в бот, разрешение получено.");
+            tg.showAlert(giveaway_id);
         });
 
         document.getElementById("sendData").addEventListener("click", () => {
