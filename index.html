@@ -21,17 +21,20 @@
             is_active: true,
         });
 
+        // Обработка нажатия кнопки
+        tg.MainButton.onClick(() => {
+            const user = tg.initDataUnsafe.user;
+            const userData = {
+                id: user.id,
+                first_name: user.first_name,
+                last_name: user.last_name || "Не указана",
+                username: user.username || "Не указан"
+            };
 
-        const user = tg.initDataUnsafe.user;
-        const userData = {
-            id: user.id,
-            first_name: user.first_name,
-            last_name: user.last_name || "Не указана",
-            username: user.username || "Не указан"
-        };
-
-        // Отправка данных в бота
-        tg.sendData(JSON.stringify(userData)); // Отправка данных в бота
+            tg.sendData(JSON.stringify(userData)); // Отправка данных в бота
+            tg.MainButton.hide(); // Скрыть кнопку после нажатия
+            alert("Данные отправлены в бот, разрешение получено.");
+        });
 
         document.getElementById("sendData").addEventListener("click", () => {
             tg.MainButton.show(); // Показать основную кнопку
